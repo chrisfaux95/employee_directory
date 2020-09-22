@@ -1,7 +1,8 @@
-import fs from 'fs';
+// import fs from 'fs';
+import Users from './users.json';
 
 export default function getUsers() {
-    let result = fs.readFileSync('users.json', 'utf8');
-    return JSON.parse(result).results;
+    let result = Users;
+    return result.results;
 }
 
