@@ -1,32 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import EmployeeRow from './EmployeeRow';
 import getUsers from '../utils/API'
-import { sortNames, sortEmails } from '../utils/sort';
+import { sortNames, sortEmails, filterNames, filterEmails } from '../utils/sort';
+
 
 export default function Table() {
-    const employees = getUsers();
-    const [employeesSorted, setEmployeesSorted] = useState(employees);
+    const [employees, setEmployees] = useState(getUsers());
+    const [employeesFiltered, setEmployeesFiltered] = useState(employees);
 
-    // const handleInputChange = () => {
-
-    // }
+    const handleInputChange = (event) => {
+        const filterStr = event.target.value;
+        setEmployeesFiltered(employees.filter((item) => filterNames(item, filterStr) || filterEmails(item, filterStr)))
+    }
 
     const handleNameSort = () => {
-        console.log('sort names')
-        sortNames(employeesSorted)
-        setEmployeesSorted(employeesSorted);
-        console.log(employeesSorted)
+        let buffer = [...employeesFiltered];
+        sortNames(buffer);
+        setEmployeesFiltered(buffer);
+        let buffer2 = [...employees];
+        sortNames(buffer2);
+        setEmployees(buffer2)
     }
 
     const handleEmailSort = () => {
-        console.log('sort emails')
-        sortEmails(employeesSorted);
-        setEmployeesSorted(employeesSorted);
+        let buffer = [...employeesFiltered];
+        sortEmails(buffer);
+        setEmployeesFiltered(buffer);
+        let buffer2 = [...employees];
+        sortEmails(buffer2);
+        setEmployees(buffer2)
     }
 
     return (
-        <div className='container-fluid mx-auto justify-content-center'>
-            <input type="text" id="employee"></input>
+        <div className='container-md mx-auto my-1 justify-content-center'>
+            <input type="text" id="employee" onChange={handleInputChange}></input>
             <table className="table table-striped">
                 <thead className="thead-dark">
                     <tr>
@@ -44,7 +51,7 @@ export default function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    {employeesSorted.map(item => <EmployeeRow employee={item} />)}
+                    {employeesFiltered.map(item => <EmployeeRow employee={item} />)}
                 </tbody>
             </table>
         </div>

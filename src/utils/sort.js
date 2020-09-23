@@ -17,3 +17,12 @@ export function sortNumbers(arr) {
 export function sortEmails(arr) {
     return arr.sort((a,b) => checkSort(a.email, b.email))
 }
+
+export function filterEmails(item, str) {
+    return item.email.indexOf(str) >= 0;
+}
+
+export function filterNames(item, str) {
+    let fullname = `${item.name.first} ${item.name.last}`
+    return fullname.indexOf(str) >= 0;
+}
